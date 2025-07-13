@@ -1,0 +1,13 @@
+/project folder
+    /app
+        __init__.py - create_app() lives here
+        extensions.py
+        /blueprints
+            /customers
+                __init__.py - Initialize Customers Blueprint
+                routes.py - Create Customers Controllers/routes
+                customerSchemas.py
+        models.py
+
+    app.py
+    config.py

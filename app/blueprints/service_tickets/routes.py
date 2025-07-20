@@ -1,7 +1,7 @@
 from flask import request, jsonify
 from app.blueprints.service_tickets import service_tickets_bp
 from app.blueprints.service_tickets.schemas import service_ticket_schema, service_tickets_schema
-from app.blueprints.customers.schemas import customer_schema
+from app.extensions import cache
 from marshmallow import ValidationError
 from app.models import Service_Tickets, Mechanics,db
 from sqlalchemy import select
@@ -22,6 +22,7 @@ def create_service_ticket():
 
 #Get all service_tickets
 @service_tickets_bp.route("/", methods=['GET'])
+@cache.cached(timeout=60)
 def get_service_tickets():
     query = select(Service_Tickets)
     service_tickets = db.session.execute(query).scalars().all()

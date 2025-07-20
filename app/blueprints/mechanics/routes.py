@@ -1,6 +1,7 @@
 from flask import request, jsonify
 from app.blueprints.mechanics import mechanics_bp
 from app.blueprints.mechanics.schemas import mechanic_schema, mechanics_schema
+from app.extensions import limiter, cache
 from marshmallow import ValidationError
 from app.models import Mechanics, db
 from sqlalchemy import select
@@ -8,6 +9,7 @@ from sqlalchemy import select
 
 #Create new mechanic
 @mechanics_bp.route("/", methods=['POST'])
+@limiter.limit("3 per hour") #only 3 new mechanics can be added per hour
 def create_mechanic():
     try:
         mechanic_data = mechanic_schema.load(request.json)
@@ -31,6 +33,7 @@ def create_mechanic():
 
 #Get all mechanics
 @mechanics_bp.route("/", methods=['GET'])
+@cache.cached(timeout=60)
 def get_mechanics():
     query = select(Mechanics)
     mechanics = db.session.execute(query).scalars().all()

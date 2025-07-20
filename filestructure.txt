@@ -1,8 +1,16 @@
 /project folder
     /app
         __init__.py - create_app() lives here
-        extensions.py
+        extensions.py - Initialize extensions here
         /blueprints
+            /mechanics
+                __init__.py - Initialize Mechanic Blueprint
+                routes.py - Create Mechanics Controllers/routes
+                mechanicSchemas.py
+            /service_tickets
+                __init__.py - Initialize Service Tickets Blueprint
+                routes.py - Create Service Tickets Controllers/routes
+                service_ticketSchemas.py
             /customers
                 __init__.py - Initialize Customers Blueprint
                 routes.py - Create Customers Controllers/routes

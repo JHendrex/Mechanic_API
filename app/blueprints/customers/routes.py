@@ -1,6 +1,7 @@
 from flask import request, jsonify
 from app.blueprints.customers import customers_bp
 from app.blueprints.customers.schemas import customer_schema, customers_schema
+from app.extensions import cache
 from marshmallow import ValidationError
 from app.models import Customers, db
 from sqlalchemy import select
@@ -31,6 +32,7 @@ def create_customer():
 
 #Get all customers
 @customers_bp.route("/", methods=['GET'])
+@cache.cached(timeout=60)
 def get_customers():
     query = select(Customers)
     customers = db.session.execute(query).scalars().all()

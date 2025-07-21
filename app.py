@@ -5,6 +5,7 @@ app = create_app('DevelopmentConfig')
 
 #Create the table
 with app.app_context():
+    #db.drop_all() #comment in and out as necessary for easy reset of database
     db.create_all()
     
 app.run()

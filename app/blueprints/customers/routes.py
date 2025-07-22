@@ -61,10 +61,16 @@ def create_customer():
 @customers_bp.route("/", methods=['GET'])
 @cache.cached(timeout=60)
 def get_customers():
-    query = select(Customers)
-    customers = db.session.execute(query).scalars().all()
-    
-    return customers_schema.jsonify(customers)
+    try:
+        page = request.args.get('page')
+        per_page = int(request.args.get('per_page'))
+        query = select(Customers)
+        customers = db.paginate(query, page=page, per_page=per_page)
+        return customer_schema.jsonify(customers), 200
+    except:    
+        query = select(Customers)
+        customers = db.session.execute(query).scalars().all()
+        return customers_schema.jsonify(customers), 200
 
 #Get Specific Customer
 @customers_bp.route("/<int:customer_id>", methods=['GET'])
@@ -81,7 +87,7 @@ def my_tickets(customer_id):
     query = select(Service_Tickets).where(Service_Tickets.customer_id == customer_id)
     tickets = db.session.execute(query).scalars().all()
     
-    return service_tickets_schema.jsonify(tickets)
+    return service_tickets_schema.jsonify(tickets), 200
 
 #Update Specific Customer
 @customers_bp.route("/", methods=['PUT'])

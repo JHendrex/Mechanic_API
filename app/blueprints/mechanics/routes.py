@@ -38,7 +38,7 @@ def get_mechanics():
     query = select(Mechanics)
     mechanics = db.session.execute(query).scalars().all()
     
-    return mechanics_schema.jsonify(mechanics)
+    return mechanics_schema.jsonify(mechanics), 200
 
 #Get Specific mechanic
 @mechanics_bp.route("/<int:mechanic_id>", methods=['GET'])
@@ -80,6 +80,7 @@ def delete_mechanic(mechanic_id):
     db.session.commit()
     return jsonify({"message": f'Mechanic id: {mechanic_id}, successfully deleted'}), 200
 
+#Get mechanics and sort by amount of tickets done
 @mechanics_bp.route("/popular", methods=['GET'])
 def popular_mechanics():
     query = select(Mechanics)

@@ -1,9 +1,9 @@
 from flask import request, jsonify
 from app.blueprints.service_tickets import service_tickets_bp
-from app.blueprints.service_tickets.schemas import service_ticket_schema, service_tickets_schema, edit_ticket_schema
+from app.blueprints.service_tickets.schemas import service_ticket_schema, service_tickets_schema, edit_ticket_schema, item_ticket_schema
 from app.extensions import cache
 from marshmallow import ValidationError
-from app.models import Service_Tickets, Mechanics,db
+from app.models import Service_Tickets, Mechanics, Inventory,db
 from sqlalchemy import select
 
 
@@ -62,6 +62,34 @@ def edit_service_ticket(service_ticket_id):
                 
         if mechanic and mechanic in service_ticket.mechanics:
             service_ticket.mechanics.remove(mechanic)
+            
+    db.session.commit()
+    return service_ticket_schema.jsonify(service_ticket), 200
+
+#Add or remove inventory item to specific service_ticket
+@service_tickets_bp.route("/<int:service_ticket_id>/item", methods=['PUT'])
+def edit_inventory_ticket(service_ticket_id):
+    try:
+        item_edit = item_ticket_schema.load(request.json)
+    except ValidationError as e:
+        return jsonify(e.messages), 400
+    
+    query = select(Service_Tickets).where(Service_Tickets.id == service_ticket_id)
+    service_ticket = db.session.execute(query).scalars().first()
+    
+    for inventory_id in item_edit['add_item_ids']:
+        query = select(Inventory).where(Inventory.id == inventory_id)
+        item = db.session.execute(query).scalars().first()
+        
+        if item and item not in service_ticket.inventory:
+            service_ticket.inventory.append(item)
+            
+    for inventory_id in item_edit['remove_item_ids']:
+        query = select(Inventory).where(Inventory.id == inventory_id)
+        item = db.session.execute(query).scalars().first()
+                
+        if item and item in service_ticket.inventory:
+            service_ticket.inventory.remove(item)
             
     db.session.commit()
     return service_ticket_schema.jsonify(service_ticket), 200

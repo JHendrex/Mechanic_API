@@ -66,7 +66,7 @@ def get_customers():
         per_page = int(request.args.get('per_page'))
         query = select(Customers)
         customers = db.paginate(query, page=page, per_page=per_page)
-        return customer_schema.jsonify(customers), 200
+        return customers_schema.jsonify(customers), 200
     except:    
         query = select(Customers)
         customers = db.session.execute(query).scalars().all()
@@ -81,6 +81,7 @@ def get_customer(customer_id):
         return customer_schema.jsonify(customer), 200
     return jsonify({"error": "Customer not found."}), 404
 
+#Get all tickets for one customer
 @customers_bp.route("/my_tickets", methods=['GET'])
 @token_required
 def my_tickets(customer_id):

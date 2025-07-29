@@ -21,7 +21,7 @@ class Customers(Base):
     password: Mapped[str] = mapped_column(db.String(360), nullable=False)
     phone:Mapped[str] = mapped_column(db.String(15), nullable=False, unique=True)
     
-    service_tickets:Mapped[List['Service_Tickets']] = db.relationship(back_populates='customer')
+    service_tickets:Mapped[List['Service_Tickets']] = db.relationship(back_populates='customer', cascade="all, delete-orphan")
     
 service_mechanics = db.Table(
     'service_mechanics',

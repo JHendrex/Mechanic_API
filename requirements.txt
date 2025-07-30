@@ -1,6 +1,0 @@
-Flask
-flask_sqlalchemy
-flask_marshmallow
-SQLAlchemy
-marshmallow
-marshmallow-sqlalchemy

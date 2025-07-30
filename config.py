@@ -1,4 +1,5 @@
 from urllib.parse import quote_plus
+import os
 
 class DevelopmentConfig:
     SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://root:%s@localhost/mechanic_api" % quote_plus("fighter4EV@")
@@ -11,4 +12,5 @@ class TestingConfig:
     CACHE_TYPE = 'SimpleCache'
 
 class ProductionConfig:
-    pass
+    SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI')
+    CACHE_TYPE = "SimpleCache"

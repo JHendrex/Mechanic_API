@@ -3,9 +3,9 @@ info:
   title: "Mechanic API"
   description: "This API manages customer, mechanic, service ticket, and inventory data for a mechanic shop."
   version: "1.0.0"
-host: "127.0.0.1:5000"
+host: "mechanic-api-lz3x.onrender.com"
 schemes:
-  - "http"
+  - "https"
 consumes:
   - "application/json"
 produces:

@@ -1,5 +1,9 @@
 /project folder
     /app
+        static - API documentation
+        |   swagger.yaml
+        utils - Sets up for authentication
+        |   util.py
         __init__.py - create_app() lives here
         extensions.py - Initialize extensions here
         /blueprints
@@ -15,7 +19,17 @@
                 __init__.py - Initialize Customers Blueprint
                 routes.py - Create Customers Controllers/routes
                 customerSchemas.py
+            /Inventory
+                __init__.py - Initialize Customers Blueprint
+                routes.py - Create Inventory Controllers/routes
+                inventorySchemas.py
         models.py
+
+    /tests - Routes are tested here
+        test_customers.py
+        test_inventory.py
+        test_mechanics.py
+        test_service_tickets.py
 
     app.py
     config.py
